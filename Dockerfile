@@ -1,5 +1,5 @@
 FROM java:8
-ARG JAR_FILE=var/lib/jenkins/workspace/restAPI/target/*.jar
-COPY ${JAR_FILE} app.jar
+WORKDIR /app
+COPY /var/lib/jenkins/workspace/restAPI/target/HelloREST-0.0.1-SNAPSHOT.jar /app/spring-boot-app.jar
 EXPOSE 8085
-ENTRYPOINT ["java","-jar","/app.jar"]
+ENTRYPOINT ["java","-jar","spring-boot-app.jar"]
