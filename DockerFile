@@ -1,8 +1,5 @@
 FROM java:8
 ARG JAR_FILE=var/lib/jenkins/workspace/restAPI/target/*.jar
 COPY ${JAR_FILE} app.jar
-
-RUN mkdir destination-dir-for-add
-ADD sample.tar.gz /destination-dir-for-add
-
+EXPOSE 8085
 ENTRYPOINT ["java","-jar","/app.jar"]
