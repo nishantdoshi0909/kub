@@ -15,6 +15,7 @@ spec:
       containers:
         - name: helloword-api-v1
           image: nishantdoshi9/nishrepo:helloapi
+          imagePullPolicy: Always
           ports:
             - containerPort: 8085
           env:
