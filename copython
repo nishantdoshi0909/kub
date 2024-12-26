@@ -1,0 +1,32 @@
+def extract_correlations(old_script):
+    """
+    Extracts grouped web_reg_save_param and associates them with the first subsequent web_* request.
+    """
+    correlations = []
+    grouped_params = []  # Temporary storage for grouped web_reg_save_param calls
+    processed_requests = set()  # Set to track processed requests
+    seen_params = set()  # Set to track already processed web_reg_save_param entries
+
+    with open(old_script, 'r') as file:
+        lines = file.readlines()
+
+    for i, line in enumerate(lines):
+        line = line.strip()
+
+        # Collect web_reg_save_param calls, ensuring no duplicates
+        if "web_reg_save_param" in line and not line.startswith("//"):
+            if line not in seen_params:
+                grouped_params.append(line)
+                seen_params.add(line)
+
+        # On encountering a web_* request, pair it with grouped_params
+        elif line.startswith("web_"):
+            # Avoid processing the same request multiple times
+            if line not in processed_requests:
+                if grouped_params:
+                    request = line.split(",")[0]  # Capture only the function name and first argument
+                    correlations.append((grouped_params.copy(), request))
+                    grouped_params.clear()  # Clear the group after processing
+                processed_requests.add(line)
+
+    return correlations
